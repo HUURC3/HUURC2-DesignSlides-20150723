@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><style type='text/css'>
+body {
+  font-family:'Helvetica';
+  letter-spacing:-5px;
+  background:#000;
+  background-size:100%;
+  color:#FFF;
+  margin:0;
+  padding:0;
+  font-weight:bold;
+}
+
+h1, h2, h3, p {
+  margin:0;
+}
+
+em, a {
+  font-style:normal;
+  color:#8dbd0c;
+}
+
+a {
+  background:#34d0e7;
+  color:#000;
+  text-decoration:none;
+}
+
+img {
+  width:100%;
+}
+
+div {
+  cursor:pointer;
+  cursor:hand;
+  position:absolute;
+  top:0px;
+  left:0px;
+  padding:75px;
+  line-height:110%;
+}
+
+div.center {
+  text-align:center;
+}
+
+div.imageText {
+  text-shadow:0px 0px 5px rgba(0,0,0,0.2);
+}
+
+notes {
+    display:none;
+}
+
+
+@-webkit-keyframes blinker1 {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+.blink1 {
+  -webkit-animation-name: blinker1;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+  -webkit-animation-duration: 2000ms;
+}
+
+@-webkit-keyframes blinker2 {
+  from { opacity: 0.0; }
+  to { opacity: 1.0; }
+}
+.blink2 {
+  -webkit-animation-name: blinker2;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+  -webkit-animation-duration: 2000ms;
+}
+
+</style><script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), ti;
+    if (!s) return;
+    var big = { current: 0, forward: fwd, reverse: rev, go: go, length: s.length };
+    window.big = big;
+    function resize() {
+        var w = window.innerWidth, h = window.innerHeight, e = s[big.current];
+        e.style.fontSize = h + 'px';
+        for (var i = h - 2; e.offsetWidth > w || e.offsetHeight > h; i -= 2) {
+            e.style.fontSize = i + 'px';
+        }
+        e.style.marginTop = ((h - e.offsetHeight) / 2) + 'px';
+    }
+    function go(n) {
+        big.current = n;
+        var e = s[n], t = parseInt(e.getAttribute('data-timeToNext') || 0, 10),
+            notes = e.getElementsByTagName('notes');
+        document.body.className = e.getAttribute('data-bodyclass') || '';
+        for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+        e.style.display = 'inline';
+        for (k = 0; typeof console === 'object' && k < notes.length; k++) console.log('%c%s: %s', 'padding:5px;font-family:serif;font-size:18px;line-height:150%;', n, notes[k].innerHTML.trim());
+        if (e.firstChild && e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url("' + e.firstChild.src + '")';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        if (t > 0) ti = window.setTimeout(fwd, (t * 1000));
+        resize();
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function() { go(++big.current % (s.length)); };
+    function fwd() { go(Math.min(s.length - 1, ++big.current)); }
+    function rev() { go(Math.max(0, --big.current)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39 || e.which === 34 || e.which === 40) fwd();
+        if (e.which === 37 || e.which === 33 || e.which === 38) rev();
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e2) {
+            var x1 = e2.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) big.current = parse_hash() || big.current;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== big.current) go(c);
+    };
+    window.onresize = resize;
+    go(big.current);
+};
+</script></head><body>
+
+<div>#RoyClaySr <br/> <em>#TechImpact</em> <br /> July 23, 2015</div>
+<div>design is everywhere</div>
+<div>bad <em>(visual)</em> design????</div>
+<div class="center"><span style="color:blue">red</span> <span style="color:yellow">purple</span> <span style="color:purple">green</span> <span style="color:green">blue</span> <span style="color:red">yellow</span></div>
+<div>bad design<br /> <em>>>>>></em> <br />confusing mismatches</div>
+<div>good design<br /> <em>>>>>></em> <br />helps tell <br />your story</div>
+<div>contr<em>a</em>st</div>
+<div><em>>>>>></em> <br />repetition <br /><em>>>>>></em></div>
+<div>proximity <br /><br />puppy <span class="blink1"><em>kitten</em></span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lion <br /><br />puppy &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="blink2"><em>kitten</em></span> lion</div>
+<div> &nbsp; &nbsp; alignment<br /> alignment <br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alignment<br /> &nbsp; alignment</span></div>
+<div>you should eliminate the things you think are unnecessary to getting your message across</div>
+<div><span style="text-decoration:line-through; color:#8dbd0c;">you should</span> eliminate the <span style="text-decoration:line-through; color:#8dbd0c;">things you think are</span> unnecessary <span style="text-decoration:line-through; color:#8dbd0c;">to getting your message across</span></div>
+<div>eliminate the unnecessary</div>
+<div><a href="www.howmanypeopleareinspacerightnow.com">www.howmanypeopleareinspacerightnow.com</a></div> 
+<div><img src="images/howmanypeopleareinspace.jpg" /></div>
+<div><img src="images/facebook.gif" /><br /><br />who designs is important<br /><br /><br /></div>
+<div>tell your <em>client's</em> story</div>
+<div>prioritize</div>
+<div><img src="images/zombies.jpg" /><a href="">www.SafeFromZombies.com</a></div>
+<div><ul><li>Zombies eat human flesh</li><li>The Polish word for "zombie" is "zywy trup"</li><li>TRex is safe from zombies</li><li>Zombies took over the planet on January 10th, 2018</li></ul></div>
+<div><em>TRex is safe from zombies</em></div>
+<div>html helps us prioritize</div>
+<div><em>h1</em></div>
+<div>tags <em>+</em> layout <br /> <em>>>>>></em> <br /> visual paths</div>
+<div>remember user stories</div>
+<div>provide the <em>why</em></div>
+<div>problem<em>/</em>solution</div>
+<div><em>value</em> proposition</div>
+<div>call to <em>action</em></div>
+<div><img src="images/zombies.jpg" /><a href="">www.SafeFromZombies.com</a></div>
+<div><img src="images/trex.png" /><span class="blink1">Come to TRex!</span></div>
+<div><span style="color:blue">c</span><span style="color:yellow">o</span><span style="color:purple">l</span><span style="color:green">o</span><span style="color:red">r</span> <br /> <br /><br />(but not toooo much)</div>
+<div>Cat shark! <br /><img src="images/catshark.jpg" /></div>
+<div><a href="http://www.pictaculous.com/">http://www.pictaculous.com/</a></div>
+<div style="background:#BAFAFC"><span style="color:#EA4033">Cat shark!</span> <br /> <img src="images/catshark.jpg" /></div>
+<div><a href="http://labs.tineye.com/multicolr/">http://labs.tineye.com/multicolr/</a></div>
+<div style="background:#BAFAFC"><span style="color:#EA4033">MOAR!!!</span> <br /><img src="images/bluered.jpg" /></div>
+<div>color <br /><em>+</em> <br /> accessibility</div>
+<div><img src="images/colorblind.jpg" /></div>
+<div>responsive design</div>
+<div><img src="images/responsive.jpg" /></div>
+<div><img src="images/whitehouse.jpg" /></div>
+<div><img src="images/dance.jpg" />content <br />choreography</div>
+<div><em>THE END</em></div>
